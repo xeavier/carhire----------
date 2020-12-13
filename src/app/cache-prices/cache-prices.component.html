@@ -1,0 +1,51 @@
+<H2>
+  Retrieve the cheapest quotes from our cache prices.
+</H2>
+
+
+<form [formGroup]="search1Form" (ngSubmit)="confirmSearch1()">
+<div>
+  <p> Input Origin place </p>
+   
+  <input type="text" class="form-control" #originBox formControlName="originBox" (keyup)="getOrigin(originBox.value)" placeholder="Origin"
+   [value]="selectedOrigin?.PlaceName" [ngModel]="selectedOrigin"  autocomplete="off" />
+ 
+</div>
+
+  <div class="list-group" [hidden]="!showOrigin" *ngFor="let origin of originPlace " (click)="setOrigin(origin)">
+    <button type="button" class="list-group-item list-group-item-action">{{origin.PlaceName}}</button>
+  </div>
+
+  <p> Input Destination place </p>
+  <input type="text" class="form-control" #destinationBox formControlName="destinationBox" (keyup)="getDestination(destinationBox.value)"
+    [value]="selectedDestination?.PlaceName" [ngModel]="selectedDestination" placeholder="Destination" autocomplete="off" />
+
+  <div class="list-group" [hidden]="!showDestination" *ngFor="let destination of destinationPlace" (click)="setDestination(destination)">
+    <button type="button" class="list-group-item list-group-item-action">{{destination.PlaceName}}</button>
+  </div>
+
+  <p>Form value: {{ search1Form.value | json }}</p>
+  <p>Form status: {{ search1Form.status | json }}</p>
+
+  <div>
+    <button type="submit" class="btn btn-success" [disabled]="!search1Form.valid">Search </button>
+  </div>
+
+</form>
+
+<div *ngIf="quotes">
+  <div *ngFor="let carrier of carriers">
+    <div *ngFor="let quotes of quotes">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1"> {{carrier.Name}}</h5>
+            <small>  {{quotes.MinPrice}} PLN</small>
+          </div>
+          <p class="mb-1">Data wylotu : {{quotes.OutboundLeg.DepartureDate}} .</p>
+          <small>Donec id elit non mi porta.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
